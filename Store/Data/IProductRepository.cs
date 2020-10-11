@@ -9,6 +9,8 @@ namespace Store.Data
 {
     public interface IProductRepository
     {
-        public IQueryable<Product> Products { get; set; }
+        public IQueryable<Product> Products { get; }
+        public void SaveProduct(Product product);
+        public Product DeleteProduct(int productId);
     }
 }

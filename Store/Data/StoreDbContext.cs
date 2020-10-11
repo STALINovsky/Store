@@ -13,6 +13,10 @@ namespace Store.Data
         {
             Database.EnsureCreated();
         }
+
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Order> Orders { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Product>().HasData(new Product[]
@@ -72,7 +76,5 @@ namespace Store.Data
                     },
             });
         }
-
-        public DbSet<Product> Products { get; set; }
     }
 }

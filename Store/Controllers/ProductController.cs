@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Store.Data;
 using Store.Models;
-using Store.ViewModels;
+using Store.Models.ViewModels;
 
 namespace Store.Controllers
 {
@@ -19,6 +19,10 @@ namespace Store.Controllers
         }
 
 
+        [Route("{category}/Page{productPage:int}", Order = 1)]
+        [Route("Page{productPage:int}", Order = 2)]
+        [Route("{category}",Order = 3)]
+        [Route("", Order = 4)]
         public ViewResult List(string category, int productPage = 1)
         {
             int skipPagesCount = (productPage - 1) * ItemsPerPage;

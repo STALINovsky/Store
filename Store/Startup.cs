@@ -5,6 +5,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Store.Data;
+using Store.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
 
 namespace Store
 {
@@ -20,48 +24,39 @@ namespace Store
         {
 
             services.AddMvc().AddMvcOptions(options => options.EnableEndpointRouting = false);
+            
+            string productDbConnection = Configuration.GetConnectionString("StoreProducts");
+            services.AddDbContext<StoreDbContext>
+            (options => options.UseSqlServer(productDbConnection));
 
-            string connection = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<StoreDbContext>(options => options.UseSqlServer(connection));
-            services.AddTransient<IProductRepository, StoreRepository>();
+            string UsersDbConnection = Configuration.GetConnectionString("StoreUsers");
+            services.AddDbContext<StoreIdentityDbContext>(options =>
+            options.UseSqlServer(UsersDbConnection));
+            services.AddIdentity<IdentityUser, IdentityRole>()
+            .AddEntityFrameworkStores<StoreIdentityDbContext>()
+            .AddDefaultTokenProviders();
 
+            services.AddTransient<IProductRepository, ProductRepository>();
+            services.AddTransient<IOrderRepository, OrderRepository>();
+            services.AddScoped<Cart>(sp => SessionCart.GetCart(sp));
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            services.AddMemoryCache();
+            services.AddSession();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            app.UseDeveloperExceptionPage();
             app.UseStatusCodePages();
             app.UseStaticFiles();
+            app.UseSession();
+            app.UseAuthentication();
             app.UseMvc(routes => {
-                routes.MapRoute(
-                    name: null,
-                    template: "{category}/Page{productPage:int}",
-                    defaults: new { controller = "Product", action = "List" }
-                );
-
-                routes.MapRoute(
-                    name: null,
-                    template: "Page{productPage:int}",
-                    defaults: new { controller = "Product", action = "List", productPage = 1 }
-                );
-
-                routes.MapRoute(
-                    name: null,
-                    template: "{category}",
-                    defaults: new { controller = "Product", action = "List", productPage = 1 }
-                );
-
-                routes.MapRoute(
-                    name: null,
-                    template: "",
-                    defaults: new { controller = "Product", action = "List", productPage = 1 });
-
                 routes.MapRoute(name: null, template: "{controller}/{action}/{id?}");
-            }); 
+            });
         }
     }
 }

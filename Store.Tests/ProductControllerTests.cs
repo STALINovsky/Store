@@ -9,7 +9,7 @@ using Store.Data;
 using Store.Models;
 using Xunit;
 using Store.Infrastructure;
-using Store.ViewModels;
+using Store.Models.ViewModels;
 
 namespace Store.Tests
 {

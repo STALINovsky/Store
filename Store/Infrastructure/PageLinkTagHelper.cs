@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using Store.ViewModels;
+using Store.Models.ViewModels;
 using System.Collections.Generic;
 
 namespace Store.Infrastructure {

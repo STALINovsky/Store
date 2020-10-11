@@ -1,0 +1,42 @@
+﻿@model IQueryable<Product>
+@{ 
+    Layout = "_AdminLayout";
+    ViewBag.Title = "All Products";
+}
+
+<table class="table table-bordered table-striped table-sm">
+    <thead>
+        <tr>
+            <th class="text-center">Id</th>
+            <th class="text-center">Name</th>
+            <th class="text-center">Price</th>
+            <th class="text-center">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td class="text-center">@product.Id</td>
+                <td class="text-center">@product.Name</td>
+                <td class="text-center">@product.Price</td>
+                <td class="text-center">
+                    <div class="d-inline-block">
+                        <a asp-action="Edit" class="btn btn-sm btn-danger"
+                           asp-route-productId="@product.Id"
+                           >Edit</a>
+                    </div>
+                    <div class="d-inline-block">
+                        <form asp-action="Delete" method="post">
+                            <input type="hidden" name="productId" value="@product.Id" />
+                            <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="text-center">
+    <a class="btn btn-sm btn-primary" asp-action="Create">Add new product</a>
+</div>

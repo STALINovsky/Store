@@ -1,0 +1,15 @@
+﻿@model Cart
+
+<div class="">
+    @if (Model.CartLines.Count > 0)
+    {
+        <small class="navbar-text"></small>
+        <b>YourCart:</b>
+        @Model.TotalValue
+    }
+    <a class="btn btn-sm btn-secondary navbar-btn"
+       asp-controller="Cart" asp-action="Index"
+       asp-route-returnurl="@ViewContext.HttpContext.Request.PathAndQuery()">
+        <i class="fa fa-shopping-cart"></i>
+    </a>
+</div>
