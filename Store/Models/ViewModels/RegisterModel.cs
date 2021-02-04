@@ -10,7 +10,7 @@ namespace Store.Models.ViewModels
     {
         [Required]
         public string Name { get; set; }
-        [UIHint("password")]
+        [UIHint("Password")]
         public string Password { get; set; }
     }
 

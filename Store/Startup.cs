@@ -29,16 +29,16 @@ namespace Store
             services.AddDbContext<StoreDbContext>
             (options => options.UseSqlServer(productDbConnection));
 
-            string UsersDbConnection = Configuration.GetConnectionString("StoreUsers");
+            string usersDbConnection = Configuration.GetConnectionString("StoreUsers");
             services.AddDbContext<StoreIdentityDbContext>(options =>
-            options.UseSqlServer(UsersDbConnection));
+            options.UseSqlServer(usersDbConnection));
             services.AddIdentity<IdentityUser, IdentityRole>()
             .AddEntityFrameworkStores<StoreIdentityDbContext>()
             .AddDefaultTokenProviders();
 
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IOrderRepository, OrderRepository>();
-            services.AddScoped<Cart>(sp => SessionCart.GetCart(sp));
+            services.AddScoped<Cart>(SessionCart.GetCart);
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddMemoryCache();

@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "secrets1": {
+      "type": "secrets.user"
+    },
+    "mssql2": {
+      "type": "mssql.local",
+      "connectionId": "StoreUsers",
+      "secretStore": "LocalSecretsFile"
+    },
+    "mssql1": {
+      "type": "mssql.local",
+      "connectionId": "StoreProducts",
+      "secretStore": "LocalSecretsFile"
+    }
+  }
+}
